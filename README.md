@@ -241,6 +241,8 @@ AUTO_RECOVERY=true
 │   ├── anti_detection/    # Stealth measures
 │   └── warmup_sequences/  # Trust building
 ├── k8s/               # Kubernetes manifests
+├── e2e/               # Playwright end-to-end tests
+├── playwright_core/   # Stealth and fingerprint utilities
 └── docs/              # Documentation
 ```
 
