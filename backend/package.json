@@ -1,0 +1,51 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "preinstall": "npx npm-force-resolutions",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "resolutions": {
+    "path-to-regexp": "6.2.1"
+  },
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@langchain/openai": "^0.3.28",
+    "@prisma/client": "^5.17.0",
+    "bcrypt": "^5.1.1",
+    "bullmq": "^5.10.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.3.1",
+    "helmet": "^7.1.0",
+    "ioredis": "^5.4.1",
+    "jsonwebtoken": "^9.0.2",
+    "langchain": "^0.2.11",
+    "pg": "^8.12.0",
+    "winston": "^3.13.1",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^20.14.13",
+    "@types/pg": "^8.11.6",
+    "@types/ws": "^8.5.11",
+    "nodemon": "^3.1.4",
+    "prisma": "^5.17.0",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.5.4"
+  }
+}

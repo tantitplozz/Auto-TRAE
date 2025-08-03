@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - backend-deployment.yaml
+  - backend-service.yaml
+  - redis-deployment.yaml
+  - redis-service.yaml
+
+# You can also add secrets, configmaps, etc.
+# Example:
+# secretGenerator:
+# - name: backend-secrets
+#   literals:
+#   - database_url=your_production_database_url

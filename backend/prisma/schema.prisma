@@ -1,0 +1,119 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  password  String
+  name      String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  accounts  Account[]
+  agents    AIAgent[]
+}
+
+model Account {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  cards     Card[]
+}
+
+model Card {
+  id              String        @id @default(cuid())
+  accountId       String
+  account         Account       @relation(fields: [accountId], references: [id])
+  cardNumber      String        @unique
+  cardHolderName  String
+  expirationDate  String
+  cvv             String
+  billingAddress  String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  transactions    Transaction[]
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  cardId      String
+  card        Card     @relation(fields: [cardId], references: [id])
+  amount      Float
+  currency    String
+  description String
+  status      String   // e.g., PENDING, COMPLETED, FAILED
+  createdAt   DateTime @default(now())
+}
+
+model Proxy {
+  id        String    @id @default(cuid())
+  host      String
+  port      Int
+  username  String?
+  password  String?
+  protocol  String    // e.g., HTTP, SOCKS5
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  agents    AIAgent[]
+}
+
+model AIAgent {
+  id            String    @id @default(cuid())
+  name          String
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  proxyId       String?
+  proxy         Proxy?    @relation(fields: [proxyId], references: [id])
+  status        String    // e.g., IDLE, RUNNING, STOPPED
+  stealthConfig Json?     // ✅ เพิ่ม stealth configuration
+  lastActive    DateTime? // ✅ เพิ่ม last active timestamp
+  detectionScore Float?   // ✅ เพิ่ม detection score
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  decisions     AIDecision[]
+  purchases     Purchase[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  agentId   String
+  agent     AIAgent  @relation(fields: [agentId], references: [id])
+  sessionId String   @unique
+  data      Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AIDecision {
+  id        String   @id @default(cuid())
+  agentId   String
+  agent     AIAgent  @relation(fields: [agentId], references: [id])
+  decision  String
+  confidence Float
+  reasoning Json?
+  createdAt DateTime @default(now())
+}
+
+model Purchase {
+  id          String   @id @default(cuid())
+  agentId     String
+  agent       AIAgent  @relation(fields: [agentId], references: [id])
+  productUrl  String
+  status      String   // PENDING, PROCESSING, SUCCESS, FAILED
+  result      Json?
+  error       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
